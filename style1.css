@@ -12,9 +12,9 @@
  position: relative;
 }
 .frame .text-wrapper {
- width: 80%;
+ width: 100%;
  top: 62px;
- left: 6px;
+ left: 16px;
  color: #000000;
  font-size: 64px;
  position: absolute;
