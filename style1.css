@@ -8,7 +8,7 @@
 .frame .div {
  background-color: #f8b2b2;
  width: 100%;
- height: auto;
+ height: 200px;
  position: relative;
 }
 .frame .text-wrapper {
