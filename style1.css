@@ -7,8 +7,8 @@
 }
 .frame .div {
  background-color: #f8b2b2;
- /*width: 100%;
- height: 600px;*/
+ width: 100%;
+ height: 600px;
  position: fixed;
 }
 .frame .text-wrapper {
