@@ -1,1 +1,42 @@
+.frame {
+ background-color: #f8b2b2;
+ display: flex;
+ flex-direction: row;
+ justify-content: center;
+ width: 100%;
+}
+.frame .div {
+ background-color: #f8b2b2;
+ width: 1920px;
+ height: 1080px;
+ position: relative;
+}
+.frame .img {
+ top: 100px;
+ left: 85px;
+ position: absolute;
+ width: 686px;
+ height: 382px;
+}
+.frame .img-2 {
+ top: 100px;
+ left: 1118px;
+ position: absolute;
+ width: 686px;
+ height: 382px;
+}
+.frame .img-3 {
+ top: 646px;
+ left: 1118px;
+ position: absolute;
+ width: 686px;
+ height: 382px;
+}
+.frame .img-4 {
+ top: 624px;
+ left: 85px;
+ position: absolute;
+ width: 686px;
+ height: 382px;
+}
 
