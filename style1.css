@@ -35,4 +35,6 @@
  letter-spacing: 0;
  line-height: normal;
 }
-
+.text-wrapper-2:hover {
+  background-color: #2980b9;
+}
