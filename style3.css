@@ -51,3 +51,20 @@ body{
 .start-btn:hover {
     background: #eaeaea;
 }
+.back-to-menu-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: #2196F3;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background 0.3s;
+}
+
+.back-to-menu-btn:hover {
+    background: #0b7dda;
+}
