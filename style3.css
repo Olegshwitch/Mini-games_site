@@ -1,1 +1,53 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
+body{
+    font-family: "Sixtyfour Convergence", serif;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.main{
+    display: none;
+}
+.question {
+    font-size: 100px;
+}
+.ans-row {
+    padding: 1em;
+    display: flex;
+    box-sizing: border-box;
+}
+.answer {
+    width: 65px;
+    height: 65px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: .5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+}
+.container-h3{
+    margin-bottom: 10px;
+}
+.start-btn {
+    font-size: 30px;
+    padding: .5em;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.start-btn:hover {
+    background: #eaeaea;
+}
