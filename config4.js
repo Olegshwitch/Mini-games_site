@@ -89,7 +89,7 @@ function update() {
 
     // Перевірка на з'їдання їжі
     if (head.x === food.x && head.y === food.y) {
-        score += 10;
+        score += 1;
         scoreElement.textContent = `Рахунок: ${score}`;
         generateFood();
     } else {
