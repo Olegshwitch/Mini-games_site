@@ -132,6 +132,8 @@ document.addEventListener('keydown', (e) => {
         case 'ArrowDown': if (direction !== 'UP') direction = 'DOWN'; break;
     }
 });
+document.getElementById('other-page-btn').addEventListener('click', () => {
+    window.location.href = 'index1.html';
 
 // Рестарт гри
 restartBtn.addEventListener('click', startGame);
