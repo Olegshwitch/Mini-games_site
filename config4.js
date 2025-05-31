@@ -134,7 +134,7 @@ document.addEventListener('keydown', (e) => {
 });
 document.getElementById('other-page-btn').addEventListener('click', () => {
     window.location.href = 'index1.html';
-
+});
 // Рестарт гри
 restartBtn.addEventListener('click', startGame);
 
