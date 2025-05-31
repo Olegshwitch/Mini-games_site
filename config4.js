@@ -5,6 +5,7 @@ const scoreElement = document.getElementById('score');
 const gameOverElement = document.getElementById('game-over');
 const finalScoreElement = document.getElementById('final-score');
 const restartBtn = document.getElementById('restart-btn');
+const otherPageBtn = document.getElementById('other-page-btn');
 
 const BOX_SIZE = 20;
 const ROWS = canvas.height / BOX_SIZE;
@@ -89,7 +90,7 @@ function update() {
 
     // Перевірка на з'їдання їжі
     if (head.x === food.x && head.y === food.y) {
-        score += 1;
+        score += 10;
         scoreElement.textContent = `Рахунок: ${score}`;
         generateFood();
     } else {
@@ -132,11 +133,14 @@ document.addEventListener('keydown', (e) => {
         case 'ArrowDown': if (direction !== 'UP') direction = 'DOWN'; break;
     }
 });
-document.getElementById('other-page-btn').addEventListener('click', () => {
-    window.location.href = 'index1.html';
-});
+
 // Рестарт гри
 restartBtn.addEventListener('click', startGame);
+
+// Перехід на іншу сторінку
+otherPageBtn.addEventListener('click', () => {
+    window.location.href = 'index1.html';
+});
 
 // Запуск гри при завантаженні
 window.addEventListener('load', startGame);
