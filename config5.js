@@ -292,6 +292,11 @@ nextLevelBtn.addEventListener('click', nextLevel);
 instructionsBtn.addEventListener('click', () => {
     window.location.href = 'index1.html';
 });
+// Отримуємо кнопку повернення в меню
+const backToMenuBtn = document.getElementById('back-to-menu');
 
+backToMenuBtn.addEventListener('click', () => {
+    window.location.href = 'index1.html';
+});
 // Ініціалізація при завантаженні
 initGame();
