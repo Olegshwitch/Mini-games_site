@@ -2,13 +2,32 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Арканоїд</title>
     <link rel="stylesheet" href="style5.css">
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
-    <button id="menuBtn">Повернутися до меню</button>
+    <div class="game-container">
+        <h1 class="game-title">Арканоїд</h1>
+        <div class="game-controls">
+            <button id="instructions-btn" class="control-btn">Інструкція</button>
+            <div id="lives" class="lives">Життя: 3</div>
+            <div id="score" class="score">Рахунок: 0</div>
+            <button id="start-btn" class="control-btn">Почати гру</button>
+        </div>
+        <div class="game-board-container">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+        <div id="game-over" class="game-over">
+            <h2>Гра закінчена!</h2>
+            <p id="final-score">Ваш рахунок: 0</p>
+            <button id="restart-btn" class="control-btn">Грати знову</button>
+        </div>
+        <div id="level-complete" class="level-complete">
+            <h2>Рівень пройдено!</h2>
+            <button id="next-level-btn" class="control-btn">Наступний рівень</button>
+        </div>
+    </div>
     <script src="config5.js"></script>
 </body>
 </html>
