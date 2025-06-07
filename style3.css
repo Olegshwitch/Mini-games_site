@@ -27,7 +27,7 @@ body {
 
 .question {
     font-size: 100px;
-    color: #333; /* Додано колір тексту для контрасту */
+    color: #f8b2b2; /* Додано колір тексту для контрасту */
 }
 
 .ans-row {
@@ -60,7 +60,7 @@ body {
 
 .container-h3 {
     margin-bottom: 10px;
-    color: #333;
+    color: #f8b2b2;
 }
 
 .start-btn {
