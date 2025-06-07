@@ -1,127 +1,171 @@
-// Отримуємо елементи DOM
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const scoreElement = document.getElementById('score');
-const livesElement = document.getElementById('lives');
-const gameOverElement = document.getElementById('game-over');
-const finalScoreElement = document.getElementById('final-score');
-const restartBtn = document.getElementById('restart-btn');
-const startBtn = document.getElementById('start-btn');
-const instructionsBtn = document.getElementById('instructions-btn');
-const levelCompleteElement = document.getElementById('level-complete');
-const nextLevelBtn = document.getElementById('next-level-btn');
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const menuBtn = document.getElementById("menuBtn");
 
-// Змінні гри
-let score = 0;
-let lives = 3;
-let level = 1;
-let gameRunning = false;
-let bricks = [];
-let ball = {};
-let paddle = {};
+canvas.width = 800;
+canvas.height = 600;
+
+let paddleWidth = 100;
+let paddleHeight = 15;
+let paddleX = (canvas.width - paddleWidth) / 2;
 let rightPressed = false;
 let leftPressed = false;
-let canvasWidth, canvasHeight;
+let ballRadius = 10;
+let x = canvas.width / 2;
+let y = canvas.height - 30;
+let dx = 4;
+let dy = -4;
+let score = 0;
+let lives = 3;
+let brickRowCount = 5;
+let brickColumnCount = 9;
+let brickWidth = 75;
+let brickHeight = 20;
+let brickPadding = 10;
+let brickOffsetTop = 60;
+let brickOffsetLeft = 30;
+let bricks = [];
 
-// Кольори для цеглинок
-const brickColors = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6'];
-
-// Ініціалізація розмірів canvas
-function initCanvasSize() {
-    const container = document.querySelector('.game-board-container');
-    canvasWidth = container.clientWidth;
-    canvasHeight = Math.floor(canvasWidth * 0.625); // 5/8 співвідношення
-    
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-    
-    if (gameRunning) {
-        initGameObjects();
-    }
-}
-
-// Ініціалізація ігрових об'єктів
-function initGameObjects() {
-    // Платформа
-    paddle = {
-        x: canvas.width / 2 - canvas.width * 0.125, // 12.5% ширини canvas
-        y: canvas.height - 20,
-        width: canvas.width * 0.25, // 25% ширини canvas
-        height: 15,
-        speed: canvas.width * 0.01 // Швидкість залежить від ширини
-    };
-
-    // М'яч
-    ball = {
-        x: canvas.width / 2,
-        y: canvas.height - 40,
-        radius: canvas.width * 0.0125, // 1.25% ширини canvas
-        dx: canvas.width * 0.00625, // 0.625% ширини canvas
-        dy: -canvas.width * 0.00625,
-        speed: canvas.width * 0.00625
-    };
-
-    // Створення цеглинок
-    createBricks();
-}
-
-// Створення цеглинок
-function createBricks() {
-    bricks = [];
-    const brickRowCount = 3 + level;
-    const brickColumnCount = 8;
-    const brickWidth = canvas.width * 0.09375; // 9.375% ширини canvas (75px при 800px)
-    const brickHeight = canvas.width * 0.025; // 2.5% ширини canvas (20px при 800px)
-    const brickPadding = canvas.width * 0.0125; // 1.25% ширини canvas (10px при 800px)
-    const brickOffsetTop = canvas.width * 0.075; // 7.5% ширини canvas (60px при 800px)
-    const brickOffsetLeft = canvas.width * 0.0375; // 3.75% ширини canvas (30px при 800px)
-
+function initBricks() {
     for (let c = 0; c < brickColumnCount; c++) {
+        bricks[c] = [];
         for (let r = 0; r < brickRowCount; r++) {
-            const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-            const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-            const brickColor = brickColors[r % brickColors.length];
-            
-            bricks.push({
-                x: brickX,
-                y: brickY,
-                width: brickWidth,
-                height: brickHeight,
-                color: brickColor,
-                visible: true
-            });
+            bricks[c][r] = { x: 0, y: 0, status: 1 };
         }
     }
 }
 
-// Інші функції залишаються такими ж, але використовують нові властивості об'єктів
-
-// Ініціалізація гри
-function initGame() {
-    initGameObjects();
+function keyDownHandler(e) {
+    if (e.key === "Right" || e.key === "ArrowRight") {
+        rightPressed = true;
+    } else if (e.key === "Left" || e.key === "ArrowLeft") {
+        leftPressed = true;
+    }
 }
 
-// Початок гри
-function startGame() {
-    gameRunning = true;
-    score = 0;
-    lives = 3;
-    level = 1;
-    scoreElement.textContent = `Рахунок: ${score}`;
-    livesElement.textContent = `Життя: ${lives}`;
-    gameOverElement.style.display = 'none';
-    levelCompleteElement.style.display = 'none';
-    initGame();
-    update();
+function keyUpHandler(e) {
+    if (e.key === "Right" || e.key === "ArrowRight") {
+        rightPressed = false;
+    } else if (e.key === "Left" || e.key === "ArrowLeft") {
+        leftPressed = false;
+    }
 }
 
-// Обробник події resize
-window.addEventListener('resize', () => {
-    initCanvasSize();
-});
+function goToMenu() {
+    window.location.href = "index1.html";
+}
 
-// Ініціалізація при завантаженні
-initCanvasSize();
+function collisionDetection() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            const b = bricks[c][r];
+            if (b.status === 1) {
+                if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                    dy = -dy;
+                    b.status = 0;
+                    score++;
+                    if (score === brickRowCount * brickColumnCount) {
+                        alert("Вітаємо! Ви виграли!");
+                        document.location.reload();
+                    }
+                }
+            }
+        }
+    }
+}
 
-// Решта вашого коду залишається без змін...
-// (всі інші функції, які не змінювалися)
+function drawBall() {
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawBricks() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status === 1) {
+                const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
+}
+
+function drawScore() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText(`Рахунок: ${score}`, 8, 20);
+}
+
+function drawLives() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText(`Життя: ${lives}`, canvas.width - 65, 20);
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBricks();
+    drawBall();
+    drawPaddle();
+    drawScore();
+    drawLives();
+    collisionDetection();
+
+    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+    }
+    if (y + dy < ballRadius) {
+        dy = -dy;
+    } else if (y + dy > canvas.height - ballRadius) {
+        if (x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy;
+        } else {
+            lives--;
+            if (!lives) {
+                alert("Гра закінчена!");
+                document.location.reload();
+            } else {
+                x = canvas.width / 2;
+                y = canvas.height - 30;
+                dx = 4;
+                dy = -4;
+                paddleX = (canvas.width - paddleWidth) / 2;
+            }
+        }
+    }
+
+    if (rightPressed && paddleX < canvas.width - paddleWidth) {
+        paddleX += 7;
+    } else if (leftPressed && paddleX > 0) {
+        paddleX -= 7;
+    }
+
+    x += dx;
+    y += dy;
+    requestAnimationFrame(draw);
+}
+
+document.addEventListener("keydown", keyDownHandler);
+document.addEventListener("keyup", keyUpHandler);
+menuBtn.addEventListener("click", goToMenu);
+
+initBricks();
+draw();
