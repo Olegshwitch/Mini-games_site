@@ -54,9 +54,9 @@ function initGameObjects() {
         x: canvas.width / 2,
         y: canvas.height - 40,
         radius: canvas.width * 0.0125,
-        dx: canvas.width * 0.00625,
-        dy: -canvas.width * 0.00625,
-        speed: canvas.width * 0.00625
+        dx: 5 * (Math.random() > 0.5 ? 1 : -1),
+        dy: -5,
+        speed: 5
     };
 
     createBricks();
@@ -245,6 +245,7 @@ function nextLevel() {
     update();
 }
 
+// Обробники подій
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Right' || e.key === 'ArrowRight') {
         rightPressed = true;
@@ -268,4 +269,5 @@ instructionsBtn.addEventListener('click', () => {
     window.location.href = 'index1.html';
 });
 
+// Ініціалізація
 initCanvasSize();
