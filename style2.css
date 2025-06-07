@@ -1,100 +1,115 @@
+/* Reset styles */
+* {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+button:focus-visible {
+    outline: 2px solid #4a90e2 !important;
+    outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Main frame styles */
 .frame {
     background-color: #f8b2b2;
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 100%;
     min-height: 100vh;
     padding: 20px;
-    box-sizing: border-box;
 }
 
-.frame .div {
-    background-color: #f8b2b2;
+/* Container for images */
+.image-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     width: 100%;
-    max-width: 1800px; /* Максимальна ширина контейнера */
+    max-width: 1200px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Common image styles */
+.image-link {
+    flex: 1;
+    min-width: 250px;
+    max-width: 350px;
+    transition: transform 0.3s ease;
+}
+
+.image-link:hover {
+    transform: scale(1.05);
+}
+
+.image-link img {
+    width: 100%;
     height: auto;
-    min-height: 100vh;
-    position: relative; /* Зміна з fixed на relative */
-    margin: 0 auto;
-}
-
-.frame .img {
-    position: absolute;
-    width: 16.666%; /* 300px / 1800px */
-    max-width: 300px;
-    aspect-ratio: 2/1; /* Зберігає квадратну пропорцію */
-    top: 10%;
-    left: 5%;
-}
-
-.frame .img-2 {
-    position: absolute;
-    width: 16.666%;
-    max-width: 300px;
     aspect-ratio: 2/1;
-    top: 10%;
-    right: 5%;
-    left: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.frame .img-3 {
-    position: absolute;
-    width: 38%; /* 686px / 1800px */
-    max-width: 686px;
+/* Bottom image styles */
+.bottom-image {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 40px;
+}
+
+.bottom-image img {
+    width: 100%;
+    height: auto;
     aspect-ratio: 686/382;
-    bottom: 5%;
-    right: 5%;
+    object-fit: contain;
+    border-radius: 8px;
 }
 
-.frame .img-4 {
-    position: absolute;
-    width: 38%;
-    max-width: 686px;
-    aspect-ratio: 686/382;
-    bottom: 5%;
-    left: 5%;
-}
-
-/* Адаптація для планшетів */
-@media (max-width: 1024px) {
-    .frame .img,
-    .frame .img-2 {
-        width: 25%;
-        top: 15%;
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .image-row {
+        gap: 15px;
+    }
+    
+    .image-link {
+        min-width: 200px;
     }
 }
 
-/* Адаптація для мобільних */
 @media (max-width: 768px) {
-    .frame .div {
-        height: auto;
-        padding-bottom: 150%; /* Для мобільної версії */
+    .image-row {
+        flex-direction: column;
+        gap: 30px;
     }
     
-    .frame .img,
-    .frame .img-2 {
-        width: 40%;
-        max-width: none;
-        top: 5%;
+    .image-link {
+        max-width: 100%;
+        width: 80%;
     }
     
-    .frame .img {
-        left: 5%;
+    .bottom-image {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .frame {
+        padding: 10px;
     }
     
-    .frame .img-2 {
-        right: 5%;
-    }
-    
-    .frame .img-3,
-    .frame .img-4 {
-        width: 90%;
-        max-width: none;
-        position: relative;
-        margin: 20px auto;
-        left: auto;
-        right: auto;
-        top: auto;
-        bottom: auto;
+    .image-link {
+        width: 100%;
     }
 }
