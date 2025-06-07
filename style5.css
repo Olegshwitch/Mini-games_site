@@ -15,14 +15,15 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 90%;
     max-width: 800px;
-    width: 100%;
+    margin: 20px auto;
 }
 
 .game-title {
     color: #2c3e50;
     margin-bottom: 20px;
-    font-size: 2.5em;
+    font-size: clamp(1.5em, 5vw, 2.5em);
 }
 
 .game-controls {
@@ -39,45 +40,55 @@ body {
     color: white;
     border: none;
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px);
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    white-space: nowrap;
 }
 
 .control-btn:hover {
     background-color: #2980b9;
 }
 
-.game-board {
+.game-board-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 62.5%; /* Співвідношення сторін 8:5 (800x500) */
+    overflow: hidden;
+}
+
+#gameCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     border: 2px solid #2c3e50;
     background-color: #ecf0f1;
-    display: block;
-    width: 100%;
-    max-width: 800px;
-    height: 500px;
-    margin: 0 auto;
 }
 
 .lives, .score {
-    font-size: 1.2em;
+    font-size: clamp(1em, 3vw, 1.2em);
     font-weight: bold;
     color: #2c3e50;
+    white-space: nowrap;
 }
 
 .game-over, .level-complete {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    padding: 30px;
+    padding: 20px;
     border-radius: 10px;
     text-align: center;
     display: none;
-    width: 80%;
+    width: 90%;
     max-width: 400px;
+    z-index: 10;
 }
 
 .game-over h2, .level-complete h2 {
@@ -90,11 +101,11 @@ body {
 }
 
 @media (max-width: 600px) {
-    .game-board {
-        height: 400px;
+    .game-controls {
+        justify-content: center;
     }
     
-    .game-controls {
-        flex-direction: column;
+    .control-btn {
+        padding: 8px 16px;
     }
 }
