@@ -27,7 +27,7 @@ body {
 
 .question {
     font-size: 100px;
-    color: #f8b2b2; /* Додано колір тексту для контрасту */
+    color: #333; /* Додано колір тексту для контрасту */
 }
 
 .ans-row {
@@ -49,13 +49,13 @@ body {
     justify-content: center;
     cursor: pointer;
     user-select: none;
-    background-color: white; /* Білий фон кнопок */
+    background-color: #f8b2b2; /* Білий фон кнопок */
     transition: transform 0.2s, background-color 0.3s;
 }
 
 .answer:hover {
     transform: scale(1.05);
-    background-color: #f0f0f0;
+    background-color: #f8b2b2;
 }
 
 .container-h3 {
