@@ -1,127 +1,168 @@
-// Отримуємо елементи DOM
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const scoreElement = document.getElementById('score');
-const livesElement = document.getElementById('lives');
-const gameOverElement = document.getElementById('game-over');
-const finalScoreElement = document.getElementById('final-score');
-const restartBtn = document.getElementById('restart-btn');
-const startBtn = document.getElementById('start-btn');
-const instructionsBtn = document.getElementById('instructions-btn');
-const levelCompleteElement = document.getElementById('level-complete');
-const nextLevelBtn = document.getElementById('next-level-btn');
-
-// Змінні гри
-let score = 0;
-let lives = 3;
-let level = 1;
-let gameRunning = false;
-let bricks = [];
-let ball = {};
-let paddle = {};
-let rightPressed = false;
-let leftPressed = false;
-let canvasWidth, canvasHeight;
-
-// Кольори для цеглинок
-const brickColors = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6'];
-
-// Ініціалізація розмірів canvas
-function initCanvasSize() {
-    const container = document.querySelector('.game-board-container');
-    canvasWidth = container.clientWidth;
-    canvasHeight = Math.floor(canvasWidth * 0.625); // 5/8 співвідношення
+// Малювання об'єктів
+function draw() {
+    // Очищення canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
+    // Малювання цеглинок
+    bricks.forEach(brick => {
+        if (brick.visible) {
+            ctx.beginPath();
+            ctx.rect(brick.x, brick.y, brick.width, brick.height);
+            ctx.fillStyle = brick.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+    });
     
-    if (gameRunning) {
-        initGameObjects();
-    }
+    // Малювання платформи
+    ctx.beginPath();
+    ctx.rect(paddle.x, paddle.y, paddle.width, paddle.height);
+    ctx.fillStyle = '#2c3e50';
+    ctx.fill();
+    ctx.closePath();
+    
+    // Малювання м'яча
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    ctx.fillStyle = '#e74c3c';
+    ctx.fill();
+    ctx.closePath();
 }
 
-// Ініціалізація ігрових об'єктів
-function initGameObjects() {
-    // Платформа
-    paddle = {
-        x: canvas.width / 2 - canvas.width * 0.125, // 12.5% ширини canvas
-        y: canvas.height - 20,
-        width: canvas.width * 0.25, // 25% ширини canvas
-        height: 15,
-        speed: canvas.width * 0.01 // Швидкість залежить від ширини
-    };
-
-    // М'яч
-    ball = {
-        x: canvas.width / 2,
-        y: canvas.height - 40,
-        radius: canvas.width * 0.0125, // 1.25% ширини canvas
-        dx: canvas.width * 0.00625, // 0.625% ширини canvas
-        dy: -canvas.width * 0.00625,
-        speed: canvas.width * 0.00625
-    };
-
-    // Створення цеглинок
-    createBricks();
-}
-
-// Створення цеглинок
-function createBricks() {
-    bricks = [];
-    const brickRowCount = 3 + level;
-    const brickColumnCount = 8;
-    const brickWidth = canvas.width * 0.09375; // 9.375% ширини canvas (75px при 800px)
-    const brickHeight = canvas.width * 0.025; // 2.5% ширини canvas (20px при 800px)
-    const brickPadding = canvas.width * 0.0125; // 1.25% ширини canvas (10px при 800px)
-    const brickOffsetTop = canvas.width * 0.075; // 7.5% ширини canvas (60px при 800px)
-    const brickOffsetLeft = canvas.width * 0.0375; // 3.75% ширини canvas (30px при 800px)
-
-    for (let c = 0; c < brickColumnCount; c++) {
-        for (let r = 0; r < brickRowCount; r++) {
-            const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-            const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-            const brickColor = brickColors[r % brickColors.length];
-            
-            bricks.push({
-                x: brickX,
-                y: brickY,
-                width: brickWidth,
-                height: brickHeight,
-                color: brickColor,
-                visible: true
-            });
+// Перевірка колізій
+function collisionDetection() {
+    for (let i = 0; i < bricks.length; i++) {
+        const brick = bricks[i];
+        if (brick.visible) {
+            if (
+                ball.x + ball.radius > brick.x &&
+                ball.x - ball.radius < brick.x + brick.width &&
+                ball.y + ball.radius > brick.y &&
+                ball.y - ball.radius < brick.y + brick.height
+            ) {
+                ball.dy = -ball.dy;
+                brick.visible = false;
+                score += 10;
+                scoreElement.textContent = `Рахунок: ${score}`;
+                
+                // Перевірка, чи всі цеглинки знищені
+                if (bricks.every(b => !b.visible)) {
+                    levelComplete();
+                }
+            }
         }
     }
 }
 
-// Інші функції залишаються такими ж, але використовують нові властивості об'єктів
-
-// Ініціалізація гри
-function initGame() {
-    initGameObjects();
+// Оновлення стану гри
+function update() {
+    if (!gameRunning) return;
+    
+    // Очищення canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Малювання об'єктів
+    draw();
+    
+    // Колізії зі стінами
+    if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
+        ball.dx = -ball.dx;
+    }
+    
+    if (ball.y + ball.dy < ball.radius) {
+        ball.dy = -ball.dy;
+    } else if (ball.y + ball.dy > canvas.height - ball.radius) {
+        // Колізія з платформою
+        if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
+            ball.dy = -ball.dy;
+            
+            // Зміна напрямку в залежності від того, де вдарився м'яч
+            const hitPosition = (ball.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
+            ball.dx = hitPosition * 5; // Множник для більшого ефекту
+        } else {
+            // Пропуск м'яча
+            lives--;
+            livesElement.textContent = `Життя: ${lives}`;
+            
+            if (lives <= 0) {
+                gameOver();
+            } else {
+                // Скидання позиції м'яча і платформи
+                ball.x = canvas.width / 2;
+                ball.y = canvas.height - 40;
+                ball.dx = ball.speed;
+                ball.dy = -ball.speed;
+                paddle.x = canvas.width / 2 - paddle.width / 2;
+            }
+        }
+    }
+    
+    // Рух платформи
+    if (rightPressed && paddle.x < canvas.width - paddle.width) {
+        paddle.x += paddle.speed;
+    } else if (leftPressed && paddle.x > 0) {
+        paddle.x -= paddle.speed;
+    }
+    
+    // Рух м'яча
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+    
+    // Перевірка колізій
+    collisionDetection();
+    
+    // Продовження анімації
+    requestAnimationFrame(update);
 }
 
-// Початок гри
-function startGame() {
-    gameRunning = true;
-    score = 0;
-    lives = 3;
-    level = 1;
-    scoreElement.textContent = `Рахунок: ${score}`;
-    livesElement.textContent = `Життя: ${lives}`;
+// Обробники подій клавіатури
+document.addEventListener('keydown', keyDownHandler);
+document.addEventListener('keyup', keyUpHandler);
+
+function keyDownHandler(e) {
+    if (e.key === 'Right' || e.key === 'ArrowRight') {
+        rightPressed = true;
+    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if (e.key === 'Right' || e.key === 'ArrowRight') {
+        rightPressed = false;
+    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+        leftPressed = false;
+    }
+}
+
+// Обробники подій кнопок
+startBtn.addEventListener('click', startGame);
+
+restartBtn.addEventListener('click', () => {
     gameOverElement.style.display = 'none';
-    levelCompleteElement.style.display = 'none';
-    initGame();
-    update();
-}
-
-// Обробник події resize
-window.addEventListener('resize', () => {
-    initCanvasSize();
+    startGame();
 });
 
-// Ініціалізація при завантаженні
-initCanvasSize();
+nextLevelBtn.addEventListener('click', () => {
+    levelCompleteElement.style.display = 'none';
+    level++;
+    initGameObjects();
+    update();
+});
 
-// Решта вашого коду залишається без змін...
-// (всі інші функції, які не змінювалися)
+instructionsBtn.addEventListener('click', () => {
+    alert('Використовуйте стрілки вліво та вправо для руху платформи. Збивайте цеглинки м\'ячем, не даючи йому впасти.');
+});
+
+// Завершення рівня
+function levelComplete() {
+    gameRunning = false;
+    levelCompleteElement.style.display = 'block';
+}
+
+// Завершення гри
+function gameOver() {
+    gameRunning = false;
+    finalScoreElement.textContent = `Ваш рахунок: ${score}`;
+    gameOverElement.style.display = 'block';
+}
