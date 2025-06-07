@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Арканоїд</title>
     <link rel="stylesheet" href="style5.css">
 </head>
@@ -15,7 +15,9 @@
             <div id="score" class="score">Рахунок: 0</div>
             <button id="start-btn" class="control-btn">Почати гру</button>
         </div>
-        <canvas id="gameCanvas" class="game-board"></canvas>
+        <div class="game-board-container">
+            <canvas id="gameCanvas"></canvas>
+        </div>
         <div id="game-over" class="game-over">
             <h2>Гра закінчена!</h2>
             <p id="final-score">Ваш рахунок: 0</p>
