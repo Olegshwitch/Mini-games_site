@@ -1,34 +1,111 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8b2b2;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: #222;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+.game-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.game-title {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: clamp(1.5em, 5vw, 2.5em);
+}
+
+.game-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.control-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: clamp(14px, 3vw, 16px);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+.control-btn:hover {
+    background-color: #2980b9;
+}
+
+.game-board-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 62.5%;
+    overflow: hidden;
 }
 
 #gameCanvas {
-    background: #111;
-    display: block;
-    margin: 0 auto;
-    border: 2px solid #444;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #2c3e50;
+    background-color: #f8b2b2;
 }
 
-#menuBtn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background: #4CAF50;
+.lives, .score {
+    font-size: clamp(1em, 3vw, 1.2em);
+    font-weight: bold;
+    color: #2c3e50;
+    white-space: nowrap;
+}
+
+.game-over, .level-complete {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    display: none;
+    width: 90%;
+    max-width: 400px;
+    z-index: 10;
 }
 
-#menuBtn:hover {
-    background: #45a049;
+.game-over h2, .level-complete h2 {
+    margin-top: 0;
+    color: #e74c3c;
+}
+
+.level-complete h2 {
+    color: #2ecc71;
+}
+
+@media (max-width: 600px) {
+    .game-controls {
+        justify-content: center;
+    }
+    
+    .control-btn {
+        padding: 8px 16px;
+    }
 }
