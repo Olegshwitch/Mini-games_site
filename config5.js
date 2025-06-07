@@ -30,7 +30,7 @@ const brickColors = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6'];
 function initCanvasSize() {
     const container = document.querySelector('.game-board-container');
     canvasWidth = container.clientWidth;
-    canvasHeight = Math.floor(canvasWidth * 0.625); // 5/8 співвідношення
+    canvasHeight = Math.floor(canvasWidth * 0.625); 
     
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -44,19 +44,19 @@ function initCanvasSize() {
 function initGameObjects() {
     // Платформа
     paddle = {
-        x: canvas.width / 2 - canvas.width * 0.125, // 12.5% ширини canvas
+        x: canvas.width / 2 - canvas.width * 0.125, 
         y: canvas.height - 20,
-        width: canvas.width * 0.25, // 25% ширини canvas
+        width: canvas.width * 0.25,
         height: 15,
-        speed: canvas.width * 0.01 // Швидкість залежить від ширини
+        speed: canvas.width * 0.01 
     };
 
     // М'яч
     ball = {
         x: canvas.width / 2,
         y: canvas.height - 40,
-        radius: canvas.width * 0.0125, // 1.25% ширини canvas
-        dx: canvas.width * 0.00625, // 0.625% ширини canvas
+        radius: canvas.width * 0.0125, 
+        dx: canvas.width * 0.00625,
         dy: -canvas.width * 0.00625,
         speed: canvas.width * 0.00625
     };
@@ -70,11 +70,11 @@ function createBricks() {
     bricks = [];
     const brickRowCount = 3 + level;
     const brickColumnCount = 8;
-    const brickWidth = canvas.width * 0.09375; // 9.375% ширини canvas (75px при 800px)
-    const brickHeight = canvas.width * 0.025; // 2.5% ширини canvas (20px при 800px)
-    const brickPadding = canvas.width * 0.0125; // 1.25% ширини canvas (10px при 800px)
-    const brickOffsetTop = canvas.width * 0.075; // 7.5% ширини canvas (60px при 800px)
-    const brickOffsetLeft = canvas.width * 0.0375; // 3.75% ширини canvas (30px при 800px)
+    const brickWidth = canvas.width * 0.09375; 
+    const brickHeight = canvas.width * 0.025; 
+    const brickPadding = canvas.width * 0.0125;
+    const brickOffsetTop = canvas.width * 0.075;
+    const brickOffsetLeft = canvas.width * 0.0375;
 
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
@@ -94,7 +94,6 @@ function createBricks() {
     }
 }
 
-// Інші функції залишаються такими ж, але використовують нові властивості об'єктів
 
 // Ініціалізація гри
 function initGame() {
@@ -122,6 +121,3 @@ window.addEventListener('resize', () => {
 
 // Ініціалізація при завантаженні
 initCanvasSize();
-
-// Решта вашого коду залишається без змін...
-// (всі інші функції, які не змінювалися)
